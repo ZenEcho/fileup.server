@@ -1,98 +1,117 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# FileUp Server
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS based backend server for FileUp application.
+基于 NestJS 的 FileUp 后端服务。
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites / 前置要求
 
-## Description
+Before you begin, ensure you have met the following requirements:
+在开始之前，请确保你已经满足以下要求：
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+*   **Node.js**: v18 or later / v18 或更高版本
+*   **pnpm**: Package manager / 包管理器
+*   **MySQL**: Database / 数据库
 
-## Project setup
+## Installation / 安装
 
 ```bash
 $ pnpm install
 ```
 
-## Compile and run the project
+## Configuration / 配置
+
+Create a `.env` file in the root directory based on the following template:
+在根目录下创建一个 `.env` 文件，参考以下模板：
+
+```env
+DATABASE_URL="mysql://user:password@localhost:3306/fileup"
+JWT_SECRET="your-super-secret-key"
+FRONTEND_URL="https://your-domain.com"
+GITHUB_CLIENT_ID="xxx"
+GITHUB_CLIENT_SECRET="xxx"
+GITHUB_CALLBACK_URL="https://your-domain.com/api/auth/github/callback"
+PORT=3000
+```
+
+> **Note**: Replace the placeholders with your actual configuration.
+> **注意**: 请将占位符替换为你实际的配置信息。
+
+## Database Setup / 数据库设置
+
+After configuring the `.env` file, generate the Prisma client and push the schema to your database:
+配置好 `.env` 文件后，生成 Prisma 客户端并将结构同步到数据库：
 
 ```bash
-# development
+# Generate Prisma Client / 生成 Prisma 客户端
+$ npx prisma generate
+
+# Push schema to database / 同步数据库结构
+$ npx prisma db push
+```
+
+## Running the app / 运行应用
+
+```bash
+# development / 开发模式
 $ pnpm run start
 
-# watch mode
+# watch mode / 监听模式
 $ pnpm run start:dev
 
-# production mode
+# production mode / 生产模式
 $ pnpm run start:prod
 ```
 
-## Run tests
+## Deployment / 部署
+
+### Build / 构建
+
+First, build the project for production:
+首先，构建生产环境代码：
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+$ pnpm build
 ```
 
-## Deployment
+The build artifacts will be stored in the `dist/` directory.
+构建产物将存储在 `dist/` 目录下。
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Deploy with PM2 / 使用 PM2 部署
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+We recommend using PM2 for process management in production.
+推荐在生产环境中使用 PM2 进行进程管理。
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+1.  **Install PM2 / 安装 PM2**:
+    ```bash
+    $ npm install -g pm2
+    ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+2.  **Start the application / 启动应用**:
+    ```bash
+    $ pm2 start ecosystem.config.js
+    ```
 
-## Resources
+3.  **Monitor / 监控**:
+    ```bash
+    $ pm2 status
+    $ pm2 logs fileup-server
+    ```
 
-Check out a few resources that may come in handy when working with NestJS:
+### Deploy with Docker / 使用 Docker 部署
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Alternatively, you can deploy using Docker.
+或者，你也可以使用 Docker 进行部署。
 
-## Support
+1.  **Build and start / 构建并启动**:
+    ```bash
+    $ docker-compose up -d --build
+    ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+2.  **View logs / 查看日志**:
+    ```bash
+    $ docker-compose logs -f
+    ```
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+[MIT licensed](LICENSE).

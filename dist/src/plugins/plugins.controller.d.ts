@@ -11,24 +11,24 @@ export declare class PluginsController {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findPending(req: any): Promise<({
@@ -39,24 +39,24 @@ export declare class PluginsController {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findMyPlugins(req: any): Promise<({
@@ -67,24 +67,24 @@ export declare class PluginsController {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findOne(id: string, allStatus?: string): Promise<({
@@ -95,24 +95,24 @@ export declare class PluginsController {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }) | null>;
     recordDownload(req: any, id: string): Promise<{
@@ -123,60 +123,60 @@ export declare class PluginsController {
         message?: undefined;
     }>;
     create(req: any, createPluginDto: CreatePluginDto): Promise<{
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     } | {
         id: string;
         createdAt: Date;
-        status: PluginStatus;
         pluginId: string;
         version: string;
         content: import("@prisma/client/runtime/client").JsonValue;
         changelog: string | null;
+        status: PluginStatus;
         auditLog: string | null;
         auditorId: string | null;
     }>;
     audit(req: any, id: string, version: string, status: PluginStatus): Promise<{
         id: string;
         createdAt: Date;
-        status: PluginStatus;
         pluginId: string;
         version: string;
         content: import("@prisma/client/runtime/client").JsonValue;
         changelog: string | null;
+        status: PluginStatus;
         auditLog: string | null;
         auditorId: string | null;
     }>;
     toggleVisibility(req: any, id: string, isPublic: boolean): Promise<{
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }>;
     delete(req: any, id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }>;
     findAllForAdmin(req: any): Promise<({
@@ -187,24 +187,24 @@ export declare class PluginsController {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
 }

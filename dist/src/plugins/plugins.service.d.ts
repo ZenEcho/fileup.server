@@ -20,24 +20,24 @@ export declare class PluginsService {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findAllPending(): Promise<({
@@ -48,24 +48,24 @@ export declare class PluginsService {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findByAuthor(authorId: string): Promise<({
@@ -76,24 +76,24 @@ export declare class PluginsService {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     findOne(id: string): Promise<({
@@ -104,24 +104,24 @@ export declare class PluginsService {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }) | null>;
     findOneAnyStatus(id: string): Promise<({
@@ -132,56 +132,56 @@ export declare class PluginsService {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }) | null>;
     create(userId: string, data: CreatePluginDto): Promise<{
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     } | {
         id: string;
         createdAt: Date;
-        status: PluginStatus;
         pluginId: string;
         version: string;
         content: import("@prisma/client/runtime/client").JsonValue;
         changelog: string | null;
+        status: PluginStatus;
         auditLog: string | null;
         auditorId: string | null;
     }>;
     audit(pluginId: string, version: string, status: PluginStatus, adminId: string): Promise<{
         id: string;
         createdAt: Date;
-        status: PluginStatus;
         pluginId: string;
         version: string;
         content: import("@prisma/client/runtime/client").JsonValue;
         changelog: string | null;
+        status: PluginStatus;
         auditLog: string | null;
         auditorId: string | null;
     }>;
@@ -193,48 +193,48 @@ export declare class PluginsService {
         versions: {
             id: string;
             createdAt: Date;
-            status: PluginStatus;
             pluginId: string;
             version: string;
             content: import("@prisma/client/runtime/client").JsonValue;
             changelog: string | null;
+            status: PluginStatus;
             auditLog: string | null;
             auditorId: string | null;
         }[];
     } & {
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     })[]>;
     delete(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }>;
     toggleVisibility(id: string, isPublic: boolean, isAdmin: boolean): Promise<{
+        id: string;
+        createdAt: Date;
+        authorId: string;
         name: string;
         description: string;
         icon: string;
-        id: string;
-        authorId: string;
         downloads: bigint;
         isPublic: boolean;
         adminDisabled: boolean;
-        createdAt: Date;
         updatedAt: Date;
     }>;
     recordDownload(pluginId: string, ip: string): Promise<{
