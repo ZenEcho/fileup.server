@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  DEVELOPER
+  ADMIN
+}
+
+enum PluginStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  githubId  String   @unique
+  username  String
+  avatar    String?
+  role      Role     @default(DEVELOPER)
+  createdAt DateTime @default(now())
+
+  plugins        Plugin[]
+  reviewedVersions PluginVersion[] // For admins who audited versions
+}
+
+model Plugin {
+  id          String   @id @db.VarChar(100) // e.g. org.example.plugin
+  authorId    String
+  name        String
+  description String
+  icon        String
+  downloads   BigInt   @default(0)
+  isPublic    Boolean  @default(true)
+  adminDisabled Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author      User     @relation(fields: [authorId], references: [id])
+  versions    PluginVersion[]
+  downloadsList PluginDownload[]
+}
+
+model PluginDownload {
+  id        String   @id @default(uuid())
+  pluginId  String   @db.VarChar(100)
+  ip        String   @db.VarChar(45) // IPv6 max length is 45
+  createdAt DateTime @default(now())
+
+  plugin    Plugin   @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+
+  @@index([pluginId, ip])
+}
+
+model PluginVersion {
+  id        String       @id @default(uuid())
+  pluginId  String       @db.VarChar(100)
+  version   String       @db.VarChar(50) // e.g. 1.0.0
+  content   Json         // Complete plugin JSON content
+  changelog String?
+  status    PluginStatus @default(PENDING)
+  auditLog  String?
+  auditorId String?
+  createdAt DateTime     @default(now())
+
+  plugin    Plugin       @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  auditor   User?        @relation(fields: [auditorId], references: [id])
+
+  @@unique([pluginId, version]) // Version must be unique per plugin
+}

@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  fileup-server:
+    build: .
+    container_name: fileup-server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Update these with your actual production values
+      - DATABASE_URL=mysql://fileup:fileup_password@fileup-db:3306/fileup
+      - JWT_SECRET=change_this_to_a_secure_random_string
+      - FRONTEND_URL=https://your-domain.com
+      - GITHUB_CLIENT_ID=your_github_client_id
+      - GITHUB_CLIENT_SECRET=your_github_client_secret
+      - GITHUB_CALLBACK_URL=https://your-domain.com/api/auth/github/callback
+    depends_on:
+      - fileup-db
+    restart: always
+    networks:
+      - fileup-network
+
+  fileup-db:
+    image: mysql:8.0
+    container_name: fileup-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: fileup
+      MYSQL_USER: fileup
+      MYSQL_PASSWORD: fileup_password
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - fileup-network
+
+networks:
+  fileup-network:
+    driver: bridge
+
+volumes:
+  db_data:
