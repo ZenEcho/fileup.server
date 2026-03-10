@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   // Fix BigInt serialization issue
-  (BigInt.prototype as any).toJSON = function () {
-    return Number(this);
-  };
+  Object.defineProperty(BigInt.prototype, 'toJSON', {
+    value: function () {
+      return Number(this);
+    },
+    configurable: true,
+  });
 
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');

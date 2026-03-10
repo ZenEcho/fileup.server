@@ -1,0 +1,656 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums";
+import type * as Prisma from "../internal/prismaNamespace";
+export type UserOAuthAccountModel = runtime.Types.Result.DefaultSelection<Prisma.$UserOAuthAccountPayload>;
+export type AggregateUserOAuthAccount = {
+    _count: UserOAuthAccountCountAggregateOutputType | null;
+    _min: UserOAuthAccountMinAggregateOutputType | null;
+    _max: UserOAuthAccountMaxAggregateOutputType | null;
+};
+export type UserOAuthAccountMinAggregateOutputType = {
+    id: string | null;
+    userId: string | null;
+    provider: $Enums.OAuthProvider | null;
+    providerUserId: string | null;
+    providerEmail: string | null;
+    isActive: boolean | null;
+    unboundAt: Date | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type UserOAuthAccountMaxAggregateOutputType = {
+    id: string | null;
+    userId: string | null;
+    provider: $Enums.OAuthProvider | null;
+    providerUserId: string | null;
+    providerEmail: string | null;
+    isActive: boolean | null;
+    unboundAt: Date | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type UserOAuthAccountCountAggregateOutputType = {
+    id: number;
+    userId: number;
+    provider: number;
+    providerUserId: number;
+    providerEmail: number;
+    isActive: number;
+    unboundAt: number;
+    createdAt: number;
+    updatedAt: number;
+    _all: number;
+};
+export type UserOAuthAccountMinAggregateInputType = {
+    id?: true;
+    userId?: true;
+    provider?: true;
+    providerUserId?: true;
+    providerEmail?: true;
+    isActive?: true;
+    unboundAt?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type UserOAuthAccountMaxAggregateInputType = {
+    id?: true;
+    userId?: true;
+    provider?: true;
+    providerUserId?: true;
+    providerEmail?: true;
+    isActive?: true;
+    unboundAt?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type UserOAuthAccountCountAggregateInputType = {
+    id?: true;
+    userId?: true;
+    provider?: true;
+    providerUserId?: true;
+    providerEmail?: true;
+    isActive?: true;
+    unboundAt?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    _all?: true;
+};
+export type UserOAuthAccountAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.UserOAuthAccountWhereInput;
+    orderBy?: Prisma.UserOAuthAccountOrderByWithRelationInput | Prisma.UserOAuthAccountOrderByWithRelationInput[];
+    cursor?: Prisma.UserOAuthAccountWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    _count?: true | UserOAuthAccountCountAggregateInputType;
+    _min?: UserOAuthAccountMinAggregateInputType;
+    _max?: UserOAuthAccountMaxAggregateInputType;
+};
+export type GetUserOAuthAccountAggregateType<T extends UserOAuthAccountAggregateArgs> = {
+    [P in keyof T & keyof AggregateUserOAuthAccount]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateUserOAuthAccount[P]> : Prisma.GetScalarType<T[P], AggregateUserOAuthAccount[P]>;
+};
+export type UserOAuthAccountGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.UserOAuthAccountWhereInput;
+    orderBy?: Prisma.UserOAuthAccountOrderByWithAggregationInput | Prisma.UserOAuthAccountOrderByWithAggregationInput[];
+    by: Prisma.UserOAuthAccountScalarFieldEnum[] | Prisma.UserOAuthAccountScalarFieldEnum;
+    having?: Prisma.UserOAuthAccountScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: UserOAuthAccountCountAggregateInputType | true;
+    _min?: UserOAuthAccountMinAggregateInputType;
+    _max?: UserOAuthAccountMaxAggregateInputType;
+};
+export type UserOAuthAccountGroupByOutputType = {
+    id: string;
+    userId: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail: string | null;
+    isActive: boolean;
+    unboundAt: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: UserOAuthAccountCountAggregateOutputType | null;
+    _min: UserOAuthAccountMinAggregateOutputType | null;
+    _max: UserOAuthAccountMaxAggregateOutputType | null;
+};
+type GetUserOAuthAccountGroupByPayload<T extends UserOAuthAccountGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<UserOAuthAccountGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof UserOAuthAccountGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], UserOAuthAccountGroupByOutputType[P]> : Prisma.GetScalarType<T[P], UserOAuthAccountGroupByOutputType[P]>;
+}>>;
+export type UserOAuthAccountWhereInput = {
+    AND?: Prisma.UserOAuthAccountWhereInput | Prisma.UserOAuthAccountWhereInput[];
+    OR?: Prisma.UserOAuthAccountWhereInput[];
+    NOT?: Prisma.UserOAuthAccountWhereInput | Prisma.UserOAuthAccountWhereInput[];
+    id?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    userId?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    provider?: Prisma.EnumOAuthProviderFilter<"UserOAuthAccount"> | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    providerEmail?: Prisma.StringNullableFilter<"UserOAuthAccount"> | string | null;
+    isActive?: Prisma.BoolFilter<"UserOAuthAccount"> | boolean;
+    unboundAt?: Prisma.DateTimeNullableFilter<"UserOAuthAccount"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"UserOAuthAccount"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"UserOAuthAccount"> | Date | string;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+};
+export type UserOAuthAccountOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    providerUserId?: Prisma.SortOrder;
+    providerEmail?: Prisma.SortOrderInput | Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    unboundAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    user?: Prisma.UserOrderByWithRelationInput;
+    _relevance?: Prisma.UserOAuthAccountOrderByRelevanceInput;
+};
+export type UserOAuthAccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    provider_providerUserId?: Prisma.UserOAuthAccountProviderProviderUserIdCompoundUniqueInput;
+    provider_userId?: Prisma.UserOAuthAccountProviderUserIdCompoundUniqueInput;
+    AND?: Prisma.UserOAuthAccountWhereInput | Prisma.UserOAuthAccountWhereInput[];
+    OR?: Prisma.UserOAuthAccountWhereInput[];
+    NOT?: Prisma.UserOAuthAccountWhereInput | Prisma.UserOAuthAccountWhereInput[];
+    userId?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    provider?: Prisma.EnumOAuthProviderFilter<"UserOAuthAccount"> | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    providerEmail?: Prisma.StringNullableFilter<"UserOAuthAccount"> | string | null;
+    isActive?: Prisma.BoolFilter<"UserOAuthAccount"> | boolean;
+    unboundAt?: Prisma.DateTimeNullableFilter<"UserOAuthAccount"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"UserOAuthAccount"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"UserOAuthAccount"> | Date | string;
+    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+}, "id" | "provider_providerUserId" | "provider_userId">;
+export type UserOAuthAccountOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    providerUserId?: Prisma.SortOrder;
+    providerEmail?: Prisma.SortOrderInput | Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    unboundAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    _count?: Prisma.UserOAuthAccountCountOrderByAggregateInput;
+    _max?: Prisma.UserOAuthAccountMaxOrderByAggregateInput;
+    _min?: Prisma.UserOAuthAccountMinOrderByAggregateInput;
+};
+export type UserOAuthAccountScalarWhereWithAggregatesInput = {
+    AND?: Prisma.UserOAuthAccountScalarWhereWithAggregatesInput | Prisma.UserOAuthAccountScalarWhereWithAggregatesInput[];
+    OR?: Prisma.UserOAuthAccountScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.UserOAuthAccountScalarWhereWithAggregatesInput | Prisma.UserOAuthAccountScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"UserOAuthAccount"> | string;
+    userId?: Prisma.StringWithAggregatesFilter<"UserOAuthAccount"> | string;
+    provider?: Prisma.EnumOAuthProviderWithAggregatesFilter<"UserOAuthAccount"> | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringWithAggregatesFilter<"UserOAuthAccount"> | string;
+    providerEmail?: Prisma.StringNullableWithAggregatesFilter<"UserOAuthAccount"> | string | null;
+    isActive?: Prisma.BoolWithAggregatesFilter<"UserOAuthAccount"> | boolean;
+    unboundAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserOAuthAccount"> | Date | string | null;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserOAuthAccount"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserOAuthAccount"> | Date | string;
+};
+export type UserOAuthAccountCreateInput = {
+    id?: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail?: string | null;
+    isActive?: boolean;
+    unboundAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutOauthAccountsInput;
+};
+export type UserOAuthAccountUncheckedCreateInput = {
+    id?: string;
+    userId: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail?: string | null;
+    isActive?: boolean;
+    unboundAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type UserOAuthAccountUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutOauthAccountsNestedInput;
+};
+export type UserOAuthAccountUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type UserOAuthAccountCreateManyInput = {
+    id?: string;
+    userId: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail?: string | null;
+    isActive?: boolean;
+    unboundAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type UserOAuthAccountUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type UserOAuthAccountUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type UserOAuthAccountListRelationFilter = {
+    every?: Prisma.UserOAuthAccountWhereInput;
+    some?: Prisma.UserOAuthAccountWhereInput;
+    none?: Prisma.UserOAuthAccountWhereInput;
+};
+export type UserOAuthAccountOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type UserOAuthAccountOrderByRelevanceInput = {
+    fields: Prisma.UserOAuthAccountOrderByRelevanceFieldEnum | Prisma.UserOAuthAccountOrderByRelevanceFieldEnum[];
+    sort: Prisma.SortOrder;
+    search: string;
+};
+export type UserOAuthAccountProviderProviderUserIdCompoundUniqueInput = {
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+};
+export type UserOAuthAccountProviderUserIdCompoundUniqueInput = {
+    provider: $Enums.OAuthProvider;
+    userId: string;
+};
+export type UserOAuthAccountCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    providerUserId?: Prisma.SortOrder;
+    providerEmail?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    unboundAt?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type UserOAuthAccountMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    providerUserId?: Prisma.SortOrder;
+    providerEmail?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    unboundAt?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type UserOAuthAccountMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    providerUserId?: Prisma.SortOrder;
+    providerEmail?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    unboundAt?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type UserOAuthAccountCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.UserOAuthAccountCreateWithoutUserInput, Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput> | Prisma.UserOAuthAccountCreateWithoutUserInput[] | Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput | Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.UserOAuthAccountCreateManyUserInputEnvelope;
+    connect?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+};
+export type UserOAuthAccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.UserOAuthAccountCreateWithoutUserInput, Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput> | Prisma.UserOAuthAccountCreateWithoutUserInput[] | Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput | Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.UserOAuthAccountCreateManyUserInputEnvelope;
+    connect?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+};
+export type UserOAuthAccountUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.UserOAuthAccountCreateWithoutUserInput, Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput> | Prisma.UserOAuthAccountCreateWithoutUserInput[] | Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput | Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.UserOAuthAccountUpsertWithWhereUniqueWithoutUserInput | Prisma.UserOAuthAccountUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.UserOAuthAccountCreateManyUserInputEnvelope;
+    set?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    disconnect?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    delete?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    connect?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    update?: Prisma.UserOAuthAccountUpdateWithWhereUniqueWithoutUserInput | Prisma.UserOAuthAccountUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.UserOAuthAccountUpdateManyWithWhereWithoutUserInput | Prisma.UserOAuthAccountUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.UserOAuthAccountScalarWhereInput | Prisma.UserOAuthAccountScalarWhereInput[];
+};
+export type UserOAuthAccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.UserOAuthAccountCreateWithoutUserInput, Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput> | Prisma.UserOAuthAccountCreateWithoutUserInput[] | Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput | Prisma.UserOAuthAccountCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.UserOAuthAccountUpsertWithWhereUniqueWithoutUserInput | Prisma.UserOAuthAccountUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.UserOAuthAccountCreateManyUserInputEnvelope;
+    set?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    disconnect?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    delete?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    connect?: Prisma.UserOAuthAccountWhereUniqueInput | Prisma.UserOAuthAccountWhereUniqueInput[];
+    update?: Prisma.UserOAuthAccountUpdateWithWhereUniqueWithoutUserInput | Prisma.UserOAuthAccountUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.UserOAuthAccountUpdateManyWithWhereWithoutUserInput | Prisma.UserOAuthAccountUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.UserOAuthAccountScalarWhereInput | Prisma.UserOAuthAccountScalarWhereInput[];
+};
+export type EnumOAuthProviderFieldUpdateOperationsInput = {
+    set?: $Enums.OAuthProvider;
+};
+export type UserOAuthAccountCreateWithoutUserInput = {
+    id?: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail?: string | null;
+    isActive?: boolean;
+    unboundAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type UserOAuthAccountUncheckedCreateWithoutUserInput = {
+    id?: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail?: string | null;
+    isActive?: boolean;
+    unboundAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type UserOAuthAccountCreateOrConnectWithoutUserInput = {
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserOAuthAccountCreateWithoutUserInput, Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput>;
+};
+export type UserOAuthAccountCreateManyUserInputEnvelope = {
+    data: Prisma.UserOAuthAccountCreateManyUserInput | Prisma.UserOAuthAccountCreateManyUserInput[];
+    skipDuplicates?: boolean;
+};
+export type UserOAuthAccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+    update: Prisma.XOR<Prisma.UserOAuthAccountUpdateWithoutUserInput, Prisma.UserOAuthAccountUncheckedUpdateWithoutUserInput>;
+    create: Prisma.XOR<Prisma.UserOAuthAccountCreateWithoutUserInput, Prisma.UserOAuthAccountUncheckedCreateWithoutUserInput>;
+};
+export type UserOAuthAccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+    data: Prisma.XOR<Prisma.UserOAuthAccountUpdateWithoutUserInput, Prisma.UserOAuthAccountUncheckedUpdateWithoutUserInput>;
+};
+export type UserOAuthAccountUpdateManyWithWhereWithoutUserInput = {
+    where: Prisma.UserOAuthAccountScalarWhereInput;
+    data: Prisma.XOR<Prisma.UserOAuthAccountUpdateManyMutationInput, Prisma.UserOAuthAccountUncheckedUpdateManyWithoutUserInput>;
+};
+export type UserOAuthAccountScalarWhereInput = {
+    AND?: Prisma.UserOAuthAccountScalarWhereInput | Prisma.UserOAuthAccountScalarWhereInput[];
+    OR?: Prisma.UserOAuthAccountScalarWhereInput[];
+    NOT?: Prisma.UserOAuthAccountScalarWhereInput | Prisma.UserOAuthAccountScalarWhereInput[];
+    id?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    userId?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    provider?: Prisma.EnumOAuthProviderFilter<"UserOAuthAccount"> | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFilter<"UserOAuthAccount"> | string;
+    providerEmail?: Prisma.StringNullableFilter<"UserOAuthAccount"> | string | null;
+    isActive?: Prisma.BoolFilter<"UserOAuthAccount"> | boolean;
+    unboundAt?: Prisma.DateTimeNullableFilter<"UserOAuthAccount"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"UserOAuthAccount"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"UserOAuthAccount"> | Date | string;
+};
+export type UserOAuthAccountCreateManyUserInput = {
+    id?: string;
+    provider: $Enums.OAuthProvider;
+    providerUserId: string;
+    providerEmail?: string | null;
+    isActive?: boolean;
+    unboundAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type UserOAuthAccountUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type UserOAuthAccountUncheckedUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type UserOAuthAccountUncheckedUpdateManyWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider;
+    providerUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+    providerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    unboundAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type UserOAuthAccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    userId?: boolean;
+    provider?: boolean;
+    providerUserId?: boolean;
+    providerEmail?: boolean;
+    isActive?: boolean;
+    unboundAt?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["userOAuthAccount"]>;
+export type UserOAuthAccountSelectScalar = {
+    id?: boolean;
+    userId?: boolean;
+    provider?: boolean;
+    providerUserId?: boolean;
+    providerEmail?: boolean;
+    isActive?: boolean;
+    unboundAt?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+};
+export type UserOAuthAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "provider" | "providerUserId" | "providerEmail" | "isActive" | "unboundAt" | "createdAt" | "updatedAt", ExtArgs["result"]["userOAuthAccount"]>;
+export type UserOAuthAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+};
+export type $UserOAuthAccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "UserOAuthAccount";
+    objects: {
+        user: Prisma.$UserPayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        userId: string;
+        provider: $Enums.OAuthProvider;
+        providerUserId: string;
+        providerEmail: string | null;
+        isActive: boolean;
+        unboundAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }, ExtArgs["result"]["userOAuthAccount"]>;
+    composites: {};
+};
+export type UserOAuthAccountGetPayload<S extends boolean | null | undefined | UserOAuthAccountDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload, S>;
+export type UserOAuthAccountCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<UserOAuthAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: UserOAuthAccountCountAggregateInputType | true;
+};
+export interface UserOAuthAccountDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['UserOAuthAccount'];
+        meta: {
+            name: 'UserOAuthAccount';
+        };
+    };
+    findUnique<T extends UserOAuthAccountFindUniqueArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountFindUniqueArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    findUniqueOrThrow<T extends UserOAuthAccountFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    findFirst<T extends UserOAuthAccountFindFirstArgs>(args?: Prisma.SelectSubset<T, UserOAuthAccountFindFirstArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    findFirstOrThrow<T extends UserOAuthAccountFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, UserOAuthAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    findMany<T extends UserOAuthAccountFindManyArgs>(args?: Prisma.SelectSubset<T, UserOAuthAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    create<T extends UserOAuthAccountCreateArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountCreateArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    createMany<T extends UserOAuthAccountCreateManyArgs>(args?: Prisma.SelectSubset<T, UserOAuthAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    delete<T extends UserOAuthAccountDeleteArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountDeleteArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    update<T extends UserOAuthAccountUpdateArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountUpdateArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    deleteMany<T extends UserOAuthAccountDeleteManyArgs>(args?: Prisma.SelectSubset<T, UserOAuthAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    updateMany<T extends UserOAuthAccountUpdateManyArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    upsert<T extends UserOAuthAccountUpsertArgs>(args: Prisma.SelectSubset<T, UserOAuthAccountUpsertArgs<ExtArgs>>): Prisma.Prisma__UserOAuthAccountClient<runtime.Types.Result.GetResult<Prisma.$UserOAuthAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    count<T extends UserOAuthAccountCountArgs>(args?: Prisma.Subset<T, UserOAuthAccountCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], UserOAuthAccountCountAggregateOutputType> : number>;
+    aggregate<T extends UserOAuthAccountAggregateArgs>(args: Prisma.Subset<T, UserOAuthAccountAggregateArgs>): Prisma.PrismaPromise<GetUserOAuthAccountAggregateType<T>>;
+    groupBy<T extends UserOAuthAccountGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: UserOAuthAccountGroupByArgs['orderBy'];
+    } : {
+        orderBy?: UserOAuthAccountGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, UserOAuthAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserOAuthAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    readonly fields: UserOAuthAccountFieldRefs;
+}
+export interface Prisma__UserOAuthAccountClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+export interface UserOAuthAccountFieldRefs {
+    readonly id: Prisma.FieldRef<"UserOAuthAccount", 'String'>;
+    readonly userId: Prisma.FieldRef<"UserOAuthAccount", 'String'>;
+    readonly provider: Prisma.FieldRef<"UserOAuthAccount", 'OAuthProvider'>;
+    readonly providerUserId: Prisma.FieldRef<"UserOAuthAccount", 'String'>;
+    readonly providerEmail: Prisma.FieldRef<"UserOAuthAccount", 'String'>;
+    readonly isActive: Prisma.FieldRef<"UserOAuthAccount", 'Boolean'>;
+    readonly unboundAt: Prisma.FieldRef<"UserOAuthAccount", 'DateTime'>;
+    readonly createdAt: Prisma.FieldRef<"UserOAuthAccount", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"UserOAuthAccount", 'DateTime'>;
+}
+export type UserOAuthAccountFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+};
+export type UserOAuthAccountFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+};
+export type UserOAuthAccountFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where?: Prisma.UserOAuthAccountWhereInput;
+    orderBy?: Prisma.UserOAuthAccountOrderByWithRelationInput | Prisma.UserOAuthAccountOrderByWithRelationInput[];
+    cursor?: Prisma.UserOAuthAccountWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.UserOAuthAccountScalarFieldEnum | Prisma.UserOAuthAccountScalarFieldEnum[];
+};
+export type UserOAuthAccountFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where?: Prisma.UserOAuthAccountWhereInput;
+    orderBy?: Prisma.UserOAuthAccountOrderByWithRelationInput | Prisma.UserOAuthAccountOrderByWithRelationInput[];
+    cursor?: Prisma.UserOAuthAccountWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.UserOAuthAccountScalarFieldEnum | Prisma.UserOAuthAccountScalarFieldEnum[];
+};
+export type UserOAuthAccountFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where?: Prisma.UserOAuthAccountWhereInput;
+    orderBy?: Prisma.UserOAuthAccountOrderByWithRelationInput | Prisma.UserOAuthAccountOrderByWithRelationInput[];
+    cursor?: Prisma.UserOAuthAccountWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.UserOAuthAccountScalarFieldEnum | Prisma.UserOAuthAccountScalarFieldEnum[];
+};
+export type UserOAuthAccountCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    data: Prisma.XOR<Prisma.UserOAuthAccountCreateInput, Prisma.UserOAuthAccountUncheckedCreateInput>;
+};
+export type UserOAuthAccountCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    data: Prisma.UserOAuthAccountCreateManyInput | Prisma.UserOAuthAccountCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+export type UserOAuthAccountUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    data: Prisma.XOR<Prisma.UserOAuthAccountUpdateInput, Prisma.UserOAuthAccountUncheckedUpdateInput>;
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+};
+export type UserOAuthAccountUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    data: Prisma.XOR<Prisma.UserOAuthAccountUpdateManyMutationInput, Prisma.UserOAuthAccountUncheckedUpdateManyInput>;
+    where?: Prisma.UserOAuthAccountWhereInput;
+    limit?: number;
+};
+export type UserOAuthAccountUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserOAuthAccountCreateInput, Prisma.UserOAuthAccountUncheckedCreateInput>;
+    update: Prisma.XOR<Prisma.UserOAuthAccountUpdateInput, Prisma.UserOAuthAccountUncheckedUpdateInput>;
+};
+export type UserOAuthAccountDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+    where: Prisma.UserOAuthAccountWhereUniqueInput;
+};
+export type UserOAuthAccountDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.UserOAuthAccountWhereInput;
+    limit?: number;
+};
+export type UserOAuthAccountDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserOAuthAccountSelect<ExtArgs> | null;
+    omit?: Prisma.UserOAuthAccountOmit<ExtArgs> | null;
+    include?: Prisma.UserOAuthAccountInclude<ExtArgs> | null;
+};
+export {};

@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/client"
+  output   = "../prisma/generated/client"
 }
 
 datasource db {
@@ -12,39 +12,124 @@ enum Role {
   ADMIN
 }
 
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum AdminUserActionType {
+  UPDATE_PROFILE
+  UPDATE_ROLE
+  UPDATE_STATUS
+  RESEND_VERIFICATION
+  RESET_PASSWORD
+  FORCE_UNBIND_OAUTH
+}
+
+enum EmailVerificationPurpose {
+  REGISTER
+  EMAIL_CHANGE
+  LOCAL_BIND
+}
+
+enum PendingEmailPurpose {
+  EMAIL_CHANGE
+  LOCAL_BIND
+}
+
+enum OAuthProvider {
+  GITHUB
+  GOOGLE
+}
+
+enum MailProvider {
+  SMTP
+}
+
+enum CaptchaProvider {
+  TURNSTILE
+  RECAPTCHA
+}
+
+enum SystemConfigAuditCategory {
+  MAIL
+  CAPTCHA
+}
+
 enum PluginStatus {
   PENDING
   APPROVED
   REJECTED
 }
 
-model User {
-  id        String   @id @default(uuid())
-  githubId  String   @unique
-  username  String
-  avatar    String?
-  role      Role     @default(DEVELOPER)
-  createdAt DateTime @default(now())
+enum PluginVersionActionType {
+  ROLLBACK
+  DELETE
+}
 
-  plugins        Plugin[]
-  reviewedVersions PluginVersion[] // For admins who audited versions
+model User {
+  id                     String     @id @default(uuid())
+  githubId               String?    @unique
+  email                  String?    @unique
+  pendingEmail           String?    @unique
+  pendingEmailPurpose    PendingEmailPurpose?
+  passwordHash           String?    @db.VarChar(255)
+  pendingPasswordHash    String?    @db.VarChar(255)
+  status                 UserStatus @default(ACTIVE)
+  emailVerifiedAt        DateTime?
+  emailVerifyRequired    Boolean    @default(false)
+  lastVerificationSentAt DateTime?
+  username               String
+  displayName            String?    @db.VarChar(100)
+  avatar                 String?
+  bio                    String?    @db.Text
+  role                   Role       @default(DEVELOPER)
+  adminNote              String?    @db.Text
+  lastLoginAt            DateTime?
+  passwordUpdatedAt      DateTime?
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @default(now()) @updatedAt
+
+  plugins                  Plugin[]
+  reviewedVersions         PluginVersion[]        // For admins who audited versions
+  deletedPluginVersions    PluginVersion[]        @relation("PluginVersionDeletedBy")
+  pluginVersionActionLogs  PluginVersionActionLog[]
+  pluginReviews            PluginReview[]         @relation("PluginReviewAuthor")
+  repliedReviews           PluginReview[]         @relation("PluginReviewLegacyReplyAuthor")
+  pluginReviewReplies      PluginReviewReply[]    @relation("PluginReviewReplyAuthor")
+  emailVerificationTokens  EmailVerificationToken[]
+  oauthAccounts            UserOAuthAccount[]
+  passwordResetTokens      PasswordResetToken[]   @relation("PasswordResetTarget")
+  passwordResetRequestedBy PasswordResetToken[]   @relation("PasswordResetOperator")
+  updatedMailConfigs       SystemMailConfig[]     @relation("SystemMailConfigUpdatedBy")
+  updatedCaptchaConfigs    SystemCaptchaConfig[]  @relation("SystemCaptchaConfigUpdatedBy")
+  systemConfigAuditLogs    SystemConfigAuditLog[] @relation("SystemConfigAuditOperator")
+  adminUserActions         AdminUserActionLog[]   @relation("AdminUserActionOperator")
+  adminUserActionsTarget   AdminUserActionLog[]   @relation("AdminUserActionTarget")
 }
 
 model Plugin {
-  id          String   @id @db.VarChar(100) // e.g. org.example.plugin
-  authorId    String
-  name        String
-  description String
-  icon        String
-  downloads   BigInt   @default(0)
-  isPublic    Boolean  @default(true)
-  adminDisabled Boolean @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                  String   @id @db.VarChar(100) // e.g. org.example.plugin
+  authorId            String
+  name                String
+  description         String
+  icon                String
+  activeVersionId     String?
+  downloads           BigInt   @default(0)
+  isPublic            Boolean  @default(true)
+  adminDisabled       Boolean  @default(false)
+  lastVersionActionAt DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  author      User     @relation(fields: [authorId], references: [id])
-  versions    PluginVersion[]
-  downloadsList PluginDownload[]
+  author            User                   @relation(fields: [authorId], references: [id])
+  versions          PluginVersion[]
+  activeVersion     PluginVersion?         @relation("PluginActiveVersion", fields: [activeVersionId], references: [id], onDelete: SetNull)
+  downloadsList     PluginDownload[]
+  reviews           PluginReview[]
+  versionActionLogs PluginVersionActionLog[]
+
+  @@index([activeVersionId])
 }
 
 model PluginDownload {
@@ -53,24 +138,212 @@ model PluginDownload {
   ip        String   @db.VarChar(45) // IPv6 max length is 45
   createdAt DateTime @default(now())
 
-  plugin    Plugin   @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  plugin Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
 
   @@index([pluginId, ip])
 }
 
 model PluginVersion {
-  id        String       @id @default(uuid())
-  pluginId  String       @db.VarChar(100)
-  version   String       @db.VarChar(50) // e.g. 1.0.0
-  content   Json         // Complete plugin JSON content
-  changelog String?
-  status    PluginStatus @default(PENDING)
-  auditLog  String?
-  auditorId String?
-  createdAt DateTime     @default(now())
+  id           String       @id @default(uuid())
+  pluginId     String       @db.VarChar(100)
+  version      String       @db.VarChar(50) // e.g. 1.0.0
+  content      Json         // Complete plugin JSON content
+  changelog    String?
+  status       PluginStatus @default(PENDING)
+  auditLog     String?
+  auditorId    String?
+  deletedAt    DateTime?
+  deletedById  String?
+  deleteReason String?      @db.Text
+  createdAt    DateTime     @default(now())
 
-  plugin    Plugin       @relation(fields: [pluginId], references: [id], onDelete: Cascade)
-  auditor   User?        @relation(fields: [auditorId], references: [id])
+  plugin           Plugin  @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  activeForPlugins Plugin[] @relation("PluginActiveVersion")
+  auditor          User?   @relation(fields: [auditorId], references: [id])
+  deletedBy        User?   @relation("PluginVersionDeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
 
   @@unique([pluginId, version]) // Version must be unique per plugin
+  @@index([pluginId, deletedAt, createdAt])
+  @@index([deletedById])
+}
+
+model PluginVersionActionLog {
+  id            String                  @id @default(uuid())
+  pluginId      String                  @db.VarChar(100)
+  operatorId    String
+  action        PluginVersionActionType
+  fromVersion   String?                 @db.VarChar(50)
+  toVersion     String?                 @db.VarChar(50)
+  targetVersion String?                 @db.VarChar(50)
+  reason        String?                 @db.Text
+  createdAt     DateTime                @default(now())
+
+  plugin   Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  operator User   @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  @@index([pluginId, createdAt])
+  @@index([operatorId, createdAt])
+}
+
+model PluginReview {
+  id              String    @id @default(uuid())
+  pluginId        String    @db.VarChar(100)
+  userId          String
+  rating          Int
+  content         String    @db.Text
+  authorReply     String?   @db.Text // legacy single reply field, reserved for compatibility
+  authorReplyById String?
+  authorReplyAt   DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  plugin        Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  user          User   @relation("PluginReviewAuthor", fields: [userId], references: [id], onDelete: Cascade)
+  authorReplyBy User?  @relation("PluginReviewLegacyReplyAuthor", fields: [authorReplyById], references: [id], onDelete: SetNull)
+  replies       PluginReviewReply[]
+
+  @@index([pluginId, createdAt])
+  @@index([pluginId(length: 100), userId(length: 149)])
+}
+
+model PluginReviewReply {
+  id        String   @id @default(uuid())
+  reviewId  String
+  userId    String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  review PluginReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user   User         @relation("PluginReviewReplyAuthor", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model EmailVerificationToken {
+  id         String                   @id @default(uuid())
+  userId     String
+  email      String                   @db.VarChar(191)
+  purpose    EmailVerificationPurpose @default(REGISTER)
+  tokenHash  String                   @db.VarChar(255)
+  codeHash   String                   @db.VarChar(255)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  sendCount  Int                      @default(1)
+  lastSentAt DateTime                 @default(now())
+  createdAt  DateTime                 @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, purpose, createdAt])
+  @@index([email, createdAt])
+  @@index([email, purpose, createdAt])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id               String   @id @default(uuid())
+  userId           String
+  tokenHash        String   @db.Char(64)
+  expiresAt        DateTime
+  consumedAt       DateTime?
+  createdByAdminId String?
+  createdAt        DateTime @default(now())
+
+  user           User  @relation("PasswordResetTarget", fields: [userId], references: [id], onDelete: Cascade)
+  createdByAdmin User? @relation("PasswordResetOperator", fields: [createdByAdminId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([tokenHash])
+  @@index([expiresAt])
+  @@index([createdByAdminId, createdAt])
+}
+
+model UserOAuthAccount {
+  id             String        @id @default(uuid())
+  userId         String
+  provider       OAuthProvider
+  providerUserId String        @db.VarChar(191)
+  providerEmail  String?       @db.VarChar(191)
+  isActive       Boolean       @default(true)
+  unboundAt      DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUserId])
+  @@unique([provider, userId])
+  @@index([userId, createdAt])
+  @@index([userId, provider, isActive])
+  @@index([providerEmail])
+}
+model SystemMailConfig {
+  id                String       @id @default("default")
+  provider          MailProvider @default(SMTP)
+  smtpHost          String?      @db.VarChar(255)
+  smtpPort          Int?
+  smtpSecure        Boolean      @default(false)
+  smtpUser          String?      @db.VarChar(255)
+  smtpPassEncrypted String?      @db.Text
+  fromEmail         String?      @db.VarChar(255)
+  fromName          String?      @db.VarChar(255)
+  enabled           Boolean      @default(false)
+  updatedById       String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  updatedBy User? @relation("SystemMailConfigUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@index([updatedById])
+}
+
+model SystemCaptchaConfig {
+  id              String          @id @default("default")
+  provider        CaptchaProvider @default(TURNSTILE)
+  siteKey         String?         @db.VarChar(255)
+  secretEncrypted String?         @db.Text
+  registerEnabled Boolean         @default(true)
+  loginEnabled    Boolean         @default(false)
+  scoreThreshold  Float           @default(0.5)
+  enabled         Boolean         @default(false)
+  updatedById     String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  updatedBy User? @relation("SystemCaptchaConfigUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@index([updatedById])
+}
+
+model SystemConfigAuditLog {
+  id         String                    @id @default(uuid())
+  category   SystemConfigAuditCategory
+  action     String                    @db.VarChar(100)
+  operatorId String?
+  success    Boolean                   @default(true)
+  detail     String?                   @db.Text
+  createdAt  DateTime                  @default(now())
+
+  operator User? @relation("SystemConfigAuditOperator", fields: [operatorId], references: [id], onDelete: SetNull)
+
+  @@index([category, createdAt])
+  @@index([operatorId, createdAt])
+}
+
+model AdminUserActionLog {
+  id           String              @id @default(uuid())
+  operatorId   String
+  targetUserId String
+  action       AdminUserActionType
+  detail       String?             @db.Text
+  createdAt    DateTime            @default(now())
+
+  operator   User @relation("AdminUserActionOperator", fields: [operatorId], references: [id], onDelete: Cascade)
+  targetUser User @relation("AdminUserActionTarget", fields: [targetUserId], references: [id], onDelete: Cascade)
+
+  @@index([operatorId, createdAt])
+  @@index([targetUserId, createdAt])
 }

@@ -4,10 +4,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaModule } from './prisma/prisma.module';
-import { PluginsModule } from './plugins/plugins.module';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { PluginsModule } from './plugins/plugins.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { SystemSettingsModule } from './system-settings/system-settings.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     PluginsModule,
     AuthModule,
+    SystemSettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
