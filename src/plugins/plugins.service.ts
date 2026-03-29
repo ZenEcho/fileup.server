@@ -15,8 +15,8 @@ export class PluginsService {
     private readonly reviewService: PluginsReviewService,
   ) {}
 
-  async findAll(status: PluginStatus = 'APPROVED') {
-    return this.queryService.findAll(status);
+  async findAll(status: PluginStatus = 'APPROVED', requesterRole?: string) {
+    return this.queryService.findAll(status, requesterRole);
   }
 
   async findAllPending() {
@@ -27,12 +27,16 @@ export class PluginsService {
     return this.queryService.findByAuthor(authorId);
   }
 
-  async findOne(id: string) {
-    return this.queryService.findOne(id);
+  async findOne(id: string, requesterId?: string, requesterRole?: string) {
+    return this.queryService.findOne(id, requesterId, requesterRole);
   }
 
-  async findOneAnyStatus(id: string) {
-    return this.queryService.findOneAnyStatus(id);
+  async findOneAnyStatus(
+    id: string,
+    requesterId: string,
+    requesterRole: string,
+  ) {
+    return this.queryService.findOneAnyStatus(id, requesterId, requesterRole);
   }
 
   async findVersions(
@@ -94,25 +98,35 @@ export class PluginsService {
     version: string,
     status: PluginStatus,
     adminId: string,
+    reason?: string,
   ) {
-    return this.writeService.audit(pluginId, version, status, adminId);
+    return this.writeService.audit(pluginId, version, status, adminId, reason);
   }
 
   async findAllForAdmin() {
     return this.queryService.findAllForAdmin();
   }
 
-  async delete(id: string) {
-    return this.writeService.delete(id);
+  async delete(id: string, operatorId: string) {
+    return this.writeService.delete(id, operatorId);
   }
 
   async toggleVisibility(
     id: string,
     isPublic: boolean,
     isAdmin: boolean,
+    operatorId: string,
     mode: 'FORCE' | 'NORMAL' = 'NORMAL',
+    reason?: string,
   ) {
-    return this.writeService.toggleVisibility(id, isPublic, isAdmin, mode);
+    return this.writeService.toggleVisibility(
+      id,
+      isPublic,
+      isAdmin,
+      operatorId,
+      mode,
+      reason,
+    );
   }
 
   async recordDownload(pluginId: string, ip: string) {

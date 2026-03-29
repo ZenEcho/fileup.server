@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PluginStatus } from '../../prisma/prisma-client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PluginVersionBase } from '../types/plugin-version-base.type';
@@ -7,11 +11,16 @@ import { PluginVersionBase } from '../types/plugin-version-base.type';
 export class PluginsQueryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(status: PluginStatus = 'APPROVED') {
+  async findAll(status: PluginStatus = 'APPROVED', requesterRole?: string) {
     if (status !== 'APPROVED') {
+      if (requesterRole !== 'ADMIN') {
+        throw new ForbiddenException(
+          'Only approved plugins can be listed publicly',
+        );
+      }
+
       return this.prisma.plugin.findMany({
         where: {
-          isPublic: true,
           versions: {
             some: {
               status,
@@ -128,7 +137,7 @@ export class PluginsQueryService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, requesterId?: string, requesterRole?: string) {
     const plugin = await this.prisma.plugin.findUnique({
       where: { id },
       include: {
@@ -151,6 +160,13 @@ export class PluginsQueryService {
       return null;
     }
 
+    if (
+      !plugin.isPublic &&
+      !this.canAccessPrivatePlugin(plugin.authorId, requesterId, requesterRole)
+    ) {
+      throw new NotFoundException('Plugin not found');
+    }
+
     return {
       ...plugin,
       versions: this.pickApprovedDisplayVersion(
@@ -160,8 +176,12 @@ export class PluginsQueryService {
     };
   }
 
-  async findOneAnyStatus(id: string) {
-    return this.prisma.plugin.findUnique({
+  async findOneAnyStatus(
+    id: string,
+    requesterId: string,
+    requesterRole: string,
+  ) {
+    const plugin = await this.prisma.plugin.findUnique({
       where: { id },
       include: {
         versions: {
@@ -177,6 +197,18 @@ export class PluginsQueryService {
         },
       },
     });
+
+    if (!plugin) {
+      return null;
+    }
+
+    if (
+      !this.canAccessPrivatePlugin(plugin.authorId, requesterId, requesterRole)
+    ) {
+      throw new NotFoundException('Plugin not found');
+    }
+
+    return plugin;
   }
 
   async findAllForAdmin() {
@@ -192,6 +224,19 @@ export class PluginsQueryService {
           select: {
             username: true,
             avatar: true,
+          },
+        },
+        versionActionLogs: {
+          orderBy: { createdAt: 'desc' },
+          take: 300,
+          include: {
+            operator: {
+              select: {
+                id: true,
+                username: true,
+                avatar: true,
+              },
+            },
           },
         },
       },
@@ -210,5 +255,16 @@ export class PluginsQueryService {
     }
 
     return approvedVersions.length > 0 ? [approvedVersions[0]] : [];
+  }
+
+  private canAccessPrivatePlugin(
+    authorId: string,
+    requesterId?: string,
+    requesterRole?: string,
+  ) {
+    return (
+      requesterRole === 'ADMIN' ||
+      Boolean(requesterId && requesterId === authorId)
+    );
   }
 }

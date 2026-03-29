@@ -1417,6 +1417,7 @@ export const PluginScalarFieldEnum = {
   downloads: 'downloads',
   isPublic: 'isPublic',
   adminDisabled: 'adminDisabled',
+  adminDisableReason: 'adminDisableReason',
   lastVersionActionAt: 'lastVersionActionAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1648,7 +1649,8 @@ export const PluginOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   icon: 'icon',
-  activeVersionId: 'activeVersionId'
+  activeVersionId: 'activeVersionId',
+  adminDisableReason: 'adminDisableReason'
 } as const
 
 export type PluginOrderByRelevanceFieldEnum = (typeof PluginOrderByRelevanceFieldEnum)[keyof typeof PluginOrderByRelevanceFieldEnum]

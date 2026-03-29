@@ -45,6 +45,8 @@ export class PluginsVersionService {
             version: true,
             status: true,
             changelog: true,
+            auditLog: true,
+            auditorId: true,
             createdAt: true,
             deletedAt: true,
           },
@@ -87,6 +89,8 @@ export class PluginsVersionService {
         status: item.status,
         isActive: effectiveActive ? effectiveActive.id === item.id : false,
         changelog: item.changelog,
+        auditLog: item.auditLog ?? null,
+        auditorId: item.auditorId ?? null,
         createdAt: item.createdAt,
         deletedAt: item.deletedAt,
       })),
@@ -358,7 +362,7 @@ export class PluginsVersionService {
         },
       },
       orderBy: { createdAt: 'desc' },
-      take: 100,
+      take: 300,
     })) as {
       id: string;
       action: PluginVersionActionType;

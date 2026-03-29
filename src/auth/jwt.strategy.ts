@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { OAuthProvider, UserStatus } from '../prisma/prisma-client';
 import { MailVerificationPolicyService } from '../system-settings/mail-verification-policy.service';
 import { UsersService } from '../users/users.service';
+import { getRequiredJwtSecret } from './jwt-secret.util';
 
 interface JwtPayload {
   sub: string;
@@ -24,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET') || 'secretKey',
+      secretOrKey: getRequiredJwtSecret(configService),
     });
   }
 

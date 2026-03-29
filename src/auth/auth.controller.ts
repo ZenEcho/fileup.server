@@ -168,7 +168,9 @@ export class AuthController {
     }
     try {
       const jwt = await this.authService.handleOAuthLogin(provider, profile);
-      res.redirect(`${frontendUrl}/auth/callback?token=${jwt.access_token}`);
+      res.redirect(
+        `${frontendUrl}/auth/callback#token=${encodeURIComponent(jwt.access_token)}`,
+      );
     } catch (error) {
       const reason = this.resolveErrorReason(error);
       res.redirect(

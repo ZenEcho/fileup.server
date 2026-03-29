@@ -6,6 +6,8 @@ export interface PluginVersionBase {
   status: PluginStatus;
   deletedAt: Date | null;
   changelog?: string | null;
+  auditLog?: string | null;
+  auditorId?: string | null;
   createdAt?: Date | string;
   content?: any;
 }

@@ -4,8 +4,12 @@ export interface CreatePluginDto {
   description: string;
   icon: string;
   version: string;
+  kind?: 'uploader' | 'site-detector';
   author?: string | Record<string, unknown>;
   script?: string;
-  content: Record<string, any>;
+  targetDriveType?: string;
+  detectScript?: string;
+  extractScript?: string;
+  content: Record<string, unknown>;
   changelog?: string;
 }

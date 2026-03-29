@@ -1,1 +1,0 @@
-export { PrismaClient, Prisma, AdminUserActionType, EmailVerificationPurpose, PendingEmailPurpose, OAuthProvider, CaptchaProvider, MailProvider, PluginStatus, PluginVersionActionType, Role, SystemConfigAuditCategory, UserStatus, } from '../../prisma/generated/client/client';

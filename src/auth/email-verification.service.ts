@@ -25,8 +25,7 @@ type PendingVerificationPurpose = Exclude<EmailVerificationPurpose, 'REGISTER'>;
 export interface RegisterResendResult {
   resent: boolean;
   email: string;
-  alreadyVerified?: boolean;
-  reason?: 'MAIL_DISABLED' | 'VERIFICATION_NOT_REQUIRED';
+  reason?: 'MAIL_DISABLED';
   mailEnabled: boolean;
   emailVerificationEnforced: boolean;
   verificationRequiredNow: boolean;
@@ -181,6 +180,13 @@ export class EmailVerificationService {
 
     const mailVerificationEnforced =
       await this.mailVerificationPolicyService.isMailVerificationEnforced();
+    const genericResponse: RegisterResendResult = {
+      resent: true,
+      email: this.maskEmail(email),
+      mailEnabled: true,
+      emailVerificationEnforced: true,
+      verificationRequiredNow: true,
+    };
 
     if (!mailVerificationEnforced) {
       return {
@@ -208,13 +214,7 @@ export class EmailVerificationService {
     });
 
     if (!user) {
-      return {
-        resent: true,
-        email: this.maskEmail(email),
-        mailEnabled: true,
-        emailVerificationEnforced: true,
-        verificationRequiredNow: true,
-      };
+      return genericResponse;
     }
 
     const verificationRequiredNow =
@@ -224,18 +224,12 @@ export class EmailVerificationService {
       );
 
     if (!verificationRequiredNow) {
-      return {
-        resent: false,
-        alreadyVerified: Boolean(user.emailVerifiedAt),
-        email: this.maskEmail(email),
-        reason: 'VERIFICATION_NOT_REQUIRED',
-        mailEnabled: true,
-        emailVerificationEnforced: true,
-        verificationRequiredNow: false,
-      };
+      return genericResponse;
     }
 
-    this.assertResendCooldown(user.lastVerificationSentAt);
+    if (!this.isResendAllowed(user.lastVerificationSentAt)) {
+      return genericResponse;
+    }
 
     await this.sendVerificationForUser({
       userId: user.id,
@@ -244,13 +238,7 @@ export class EmailVerificationService {
       purpose: EmailVerificationPurpose.REGISTER,
     });
 
-    return {
-      resent: true,
-      email: this.maskEmail(email),
-      mailEnabled: true,
-      emailVerificationEnforced: true,
-      verificationRequiredNow: true,
-    };
+    return genericResponse;
   }
 
   async resendForPendingPurpose(payload: {
@@ -536,6 +524,15 @@ export class EmailVerificationService {
         `Please wait ${retryAfter}s before requesting a new verification email`,
         HttpStatus.TOO_MANY_REQUESTS,
       );
+    }
+  }
+
+  private isResendAllowed(lastVerificationSentAt: Date | null) {
+    try {
+      this.assertResendCooldown(lastVerificationSentAt);
+      return true;
+    } catch {
+      return false;
     }
   }
 }

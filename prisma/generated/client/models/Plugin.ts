@@ -44,6 +44,7 @@ export type PluginMinAggregateOutputType = {
   downloads: bigint | null
   isPublic: boolean | null
   adminDisabled: boolean | null
+  adminDisableReason: string | null
   lastVersionActionAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +60,7 @@ export type PluginMaxAggregateOutputType = {
   downloads: bigint | null
   isPublic: boolean | null
   adminDisabled: boolean | null
+  adminDisableReason: string | null
   lastVersionActionAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -74,6 +76,7 @@ export type PluginCountAggregateOutputType = {
   downloads: number
   isPublic: number
   adminDisabled: number
+  adminDisableReason: number
   lastVersionActionAt: number
   createdAt: number
   updatedAt: number
@@ -99,6 +102,7 @@ export type PluginMinAggregateInputType = {
   downloads?: true
   isPublic?: true
   adminDisabled?: true
+  adminDisableReason?: true
   lastVersionActionAt?: true
   createdAt?: true
   updatedAt?: true
@@ -114,6 +118,7 @@ export type PluginMaxAggregateInputType = {
   downloads?: true
   isPublic?: true
   adminDisabled?: true
+  adminDisableReason?: true
   lastVersionActionAt?: true
   createdAt?: true
   updatedAt?: true
@@ -129,6 +134,7 @@ export type PluginCountAggregateInputType = {
   downloads?: true
   isPublic?: true
   adminDisabled?: true
+  adminDisableReason?: true
   lastVersionActionAt?: true
   createdAt?: true
   updatedAt?: true
@@ -231,6 +237,7 @@ export type PluginGroupByOutputType = {
   downloads: bigint
   isPublic: boolean
   adminDisabled: boolean
+  adminDisableReason: string | null
   lastVersionActionAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -269,6 +276,7 @@ export type PluginWhereInput = {
   downloads?: Prisma.BigIntFilter<"Plugin"> | bigint | number
   isPublic?: Prisma.BoolFilter<"Plugin"> | boolean
   adminDisabled?: Prisma.BoolFilter<"Plugin"> | boolean
+  adminDisableReason?: Prisma.StringNullableFilter<"Plugin"> | string | null
   lastVersionActionAt?: Prisma.DateTimeNullableFilter<"Plugin"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Plugin"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plugin"> | Date | string
@@ -290,6 +298,7 @@ export type PluginOrderByWithRelationInput = {
   downloads?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
   adminDisabled?: Prisma.SortOrder
+  adminDisableReason?: Prisma.SortOrderInput | Prisma.SortOrder
   lastVersionActionAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -315,6 +324,7 @@ export type PluginWhereUniqueInput = Prisma.AtLeast<{
   downloads?: Prisma.BigIntFilter<"Plugin"> | bigint | number
   isPublic?: Prisma.BoolFilter<"Plugin"> | boolean
   adminDisabled?: Prisma.BoolFilter<"Plugin"> | boolean
+  adminDisableReason?: Prisma.StringNullableFilter<"Plugin"> | string | null
   lastVersionActionAt?: Prisma.DateTimeNullableFilter<"Plugin"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Plugin"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plugin"> | Date | string
@@ -336,6 +346,7 @@ export type PluginOrderByWithAggregationInput = {
   downloads?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
   adminDisabled?: Prisma.SortOrder
+  adminDisableReason?: Prisma.SortOrderInput | Prisma.SortOrder
   lastVersionActionAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -359,6 +370,7 @@ export type PluginScalarWhereWithAggregatesInput = {
   downloads?: Prisma.BigIntWithAggregatesFilter<"Plugin"> | bigint | number
   isPublic?: Prisma.BoolWithAggregatesFilter<"Plugin"> | boolean
   adminDisabled?: Prisma.BoolWithAggregatesFilter<"Plugin"> | boolean
+  adminDisableReason?: Prisma.StringNullableWithAggregatesFilter<"Plugin"> | string | null
   lastVersionActionAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Plugin"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Plugin"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Plugin"> | Date | string
@@ -372,6 +384,7 @@ export type PluginCreateInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -393,6 +406,7 @@ export type PluginUncheckedCreateInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -410,6 +424,7 @@ export type PluginUpdateInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -431,6 +446,7 @@ export type PluginUncheckedUpdateInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -450,6 +466,7 @@ export type PluginCreateManyInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -463,6 +480,7 @@ export type PluginUpdateManyMutationInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -478,6 +496,7 @@ export type PluginUncheckedUpdateManyInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -509,6 +528,7 @@ export type PluginCountOrderByAggregateInput = {
   downloads?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
   adminDisabled?: Prisma.SortOrder
+  adminDisableReason?: Prisma.SortOrder
   lastVersionActionAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -528,6 +548,7 @@ export type PluginMaxOrderByAggregateInput = {
   downloads?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
   adminDisabled?: Prisma.SortOrder
+  adminDisableReason?: Prisma.SortOrder
   lastVersionActionAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -543,6 +564,7 @@ export type PluginMinOrderByAggregateInput = {
   downloads?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
   adminDisabled?: Prisma.SortOrder
+  adminDisableReason?: Prisma.SortOrder
   lastVersionActionAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -713,6 +735,7 @@ export type PluginCreateWithoutAuthorInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -732,6 +755,7 @@ export type PluginUncheckedCreateWithoutAuthorInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -780,6 +804,7 @@ export type PluginScalarWhereInput = {
   downloads?: Prisma.BigIntFilter<"Plugin"> | bigint | number
   isPublic?: Prisma.BoolFilter<"Plugin"> | boolean
   adminDisabled?: Prisma.BoolFilter<"Plugin"> | boolean
+  adminDisableReason?: Prisma.StringNullableFilter<"Plugin"> | string | null
   lastVersionActionAt?: Prisma.DateTimeNullableFilter<"Plugin"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Plugin"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plugin"> | Date | string
@@ -793,6 +818,7 @@ export type PluginCreateWithoutDownloadsListInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -813,6 +839,7 @@ export type PluginUncheckedCreateWithoutDownloadsListInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -845,6 +872,7 @@ export type PluginUpdateWithoutDownloadsListInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -865,6 +893,7 @@ export type PluginUncheckedUpdateWithoutDownloadsListInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -881,6 +910,7 @@ export type PluginCreateWithoutVersionsInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -901,6 +931,7 @@ export type PluginUncheckedCreateWithoutVersionsInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -922,6 +953,7 @@ export type PluginCreateWithoutActiveVersionInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -941,6 +973,7 @@ export type PluginUncheckedCreateWithoutActiveVersionInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -979,6 +1012,7 @@ export type PluginUpdateWithoutVersionsInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -999,6 +1033,7 @@ export type PluginUncheckedUpdateWithoutVersionsInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1031,6 +1066,7 @@ export type PluginCreateWithoutVersionActionLogsInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1051,6 +1087,7 @@ export type PluginUncheckedCreateWithoutVersionActionLogsInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1083,6 +1120,7 @@ export type PluginUpdateWithoutVersionActionLogsInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1103,6 +1141,7 @@ export type PluginUncheckedUpdateWithoutVersionActionLogsInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1119,6 +1158,7 @@ export type PluginCreateWithoutReviewsInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1139,6 +1179,7 @@ export type PluginUncheckedCreateWithoutReviewsInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1171,6 +1212,7 @@ export type PluginUpdateWithoutReviewsInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1191,6 +1233,7 @@ export type PluginUncheckedUpdateWithoutReviewsInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1208,6 +1251,7 @@ export type PluginCreateManyAuthorInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1221,6 +1265,7 @@ export type PluginUpdateWithoutAuthorInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1240,6 +1285,7 @@ export type PluginUncheckedUpdateWithoutAuthorInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1258,6 +1304,7 @@ export type PluginUncheckedUpdateManyWithoutAuthorInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1272,6 +1319,7 @@ export type PluginCreateManyActiveVersionInput = {
   downloads?: bigint | number
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: string | null
   lastVersionActionAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1285,6 +1333,7 @@ export type PluginUpdateWithoutActiveVersionInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1304,6 +1353,7 @@ export type PluginUncheckedUpdateWithoutActiveVersionInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1322,6 +1372,7 @@ export type PluginUncheckedUpdateManyWithoutActiveVersionInput = {
   downloads?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   adminDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adminDisableReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastVersionActionAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1395,6 +1446,7 @@ export type PluginSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   downloads?: boolean
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: boolean
   lastVersionActionAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1419,12 +1471,13 @@ export type PluginSelectScalar = {
   downloads?: boolean
   isPublic?: boolean
   adminDisabled?: boolean
+  adminDisableReason?: boolean
   lastVersionActionAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PluginOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authorId" | "name" | "description" | "icon" | "activeVersionId" | "downloads" | "isPublic" | "adminDisabled" | "lastVersionActionAt" | "createdAt" | "updatedAt", ExtArgs["result"]["plugin"]>
+export type PluginOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authorId" | "name" | "description" | "icon" | "activeVersionId" | "downloads" | "isPublic" | "adminDisabled" | "adminDisableReason" | "lastVersionActionAt" | "createdAt" | "updatedAt", ExtArgs["result"]["plugin"]>
 export type PluginInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   versions?: boolean | Prisma.Plugin$versionsArgs<ExtArgs>
@@ -1455,6 +1508,7 @@ export type $PluginPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     downloads: bigint
     isPublic: boolean
     adminDisabled: boolean
+    adminDisableReason: string | null
     lastVersionActionAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -1842,6 +1896,7 @@ export interface PluginFieldRefs {
   readonly downloads: Prisma.FieldRef<"Plugin", 'BigInt'>
   readonly isPublic: Prisma.FieldRef<"Plugin", 'Boolean'>
   readonly adminDisabled: Prisma.FieldRef<"Plugin", 'Boolean'>
+  readonly adminDisableReason: Prisma.FieldRef<"Plugin", 'String'>
   readonly lastVersionActionAt: Prisma.FieldRef<"Plugin", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Plugin", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Plugin", 'DateTime'>

@@ -60,9 +60,20 @@ enum PluginStatus {
   PENDING
   APPROVED
   REJECTED
+  CHANGES_REQUIRED
 }
 
 enum PluginVersionActionType {
+  SUBMIT
+  RESUBMIT
+  AUDIT_APPROVED
+  AUDIT_REJECTED
+  AUDIT_CHANGES_REQUIRED
+  VISIBILITY_PUBLIC
+  VISIBILITY_PRIVATE
+  FORCE_UNPUBLISH
+  FORCE_REPUBLISH
+  PLUGIN_DELETE
   ROLLBACK
   DELETE
 }
@@ -118,6 +129,7 @@ model Plugin {
   downloads           BigInt   @default(0)
   isPublic            Boolean  @default(true)
   adminDisabled       Boolean  @default(false)
+  adminDisableReason  String?  @db.Text
   lastVersionActionAt DateTime?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -150,7 +162,7 @@ model PluginVersion {
   content      Json         // Complete plugin JSON content
   changelog    String?
   status       PluginStatus @default(PENDING)
-  auditLog     String?
+  auditLog     String?      @db.Text
   auditorId    String?
   deletedAt    DateTime?
   deletedById  String?

@@ -14,6 +14,7 @@ import {
 import { PluginsService } from './plugins.service';
 import { CreatePluginDto } from './dto/create-plugin.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/optional-jwt-auth.guard';
 import { PluginStatus } from '../prisma/prisma-client';
 import { Request } from 'express';
 import { AuthUser } from '../common/types/auth-user.type';
@@ -23,8 +24,19 @@ export class PluginsController {
   constructor(private readonly pluginsService: PluginsService) {}
 
   @Get()
-  findAll(@Query('status') status?: PluginStatus) {
-    return this.pluginsService.findAll(status);
+  @UseGuards(OptionalJwtAuthGuard)
+  findAll(@Req() req: Request, @Query('status') status?: PluginStatus) {
+    const user = req.user as AuthUser | undefined;
+
+    if (status && status !== 'APPROVED') {
+      if (!user || user.role !== 'ADMIN') {
+        throw new ForbiddenException(
+          'Only admins can query non-approved plugins',
+        );
+      }
+    }
+
+    return this.pluginsService.findAll(status, user?.role);
   }
 
   @Get('pending')
@@ -156,25 +168,26 @@ export class PluginsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Query('allStatus') allStatus?: string) {
+  @UseGuards(OptionalJwtAuthGuard)
+  findOne(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Query('allStatus') allStatus?: string,
+  ) {
+    const user = req.user as AuthUser | undefined;
     if (allStatus === 'true') {
-      return this.pluginsService.findOneAnyStatus(id);
+      if (!user) {
+        throw new ForbiddenException('Authentication is required');
+      }
+
+      return this.pluginsService.findOneAnyStatus(id, user.userId, user.role);
     }
-    return this.pluginsService.findOne(id);
+    return this.pluginsService.findOne(id, user?.userId, user?.role);
   }
 
   @Post(':id/download')
   async recordDownload(@Req() req: Request, @Param('id') id: string) {
-    const forwardedFor = req.headers['x-forwarded-for'];
-    const rawIp =
-      (typeof forwardedFor === 'string'
-        ? forwardedFor
-        : Array.isArray(forwardedFor)
-          ? forwardedFor[0]
-          : undefined) ||
-      req.ip ||
-      req.socket.remoteAddress;
-    const finalIp = rawIp?.split(',')[0] || 'unknown';
+    const finalIp = req.ip || req.socket.remoteAddress || 'unknown';
     return this.pluginsService.recordDownload(id, finalIp);
   }
 
@@ -192,12 +205,13 @@ export class PluginsController {
     @Param('id') id: string,
     @Param('version') version: string,
     @Body('status') status: PluginStatus,
+    @Body('reason') reason?: string,
   ) {
     const user = req.user as AuthUser;
     if (user.role !== 'ADMIN') {
       throw new ForbiddenException('Only admins can audit plugins');
     }
-    return this.pluginsService.audit(id, version, status, user.userId);
+    return this.pluginsService.audit(id, version, status, user.userId, reason);
   }
 
   @Patch(':id/visibility')
@@ -207,6 +221,7 @@ export class PluginsController {
     @Param('id') id: string,
     @Body('isPublic') isPublic: boolean,
     @Body('mode') mode?: 'FORCE' | 'NORMAL',
+    @Body('reason') reason?: string,
   ) {
     const user = req.user as AuthUser;
     const plugin = await this.pluginsService.findOne(id);
@@ -217,7 +232,14 @@ export class PluginsController {
     }
 
     const isAdmin = user.role === 'ADMIN';
-    return this.pluginsService.toggleVisibility(id, isPublic, isAdmin, mode);
+    return this.pluginsService.toggleVisibility(
+      id,
+      isPublic,
+      isAdmin,
+      user.userId,
+      mode,
+      reason,
+    );
   }
 
   @Delete(':id')
@@ -227,7 +249,7 @@ export class PluginsController {
     if (user.role !== 'ADMIN') {
       throw new ForbiddenException('Only admins can delete plugins');
     }
-    return this.pluginsService.delete(id);
+    return this.pluginsService.delete(id, user.userId);
   }
 
   @Get('admin/all')

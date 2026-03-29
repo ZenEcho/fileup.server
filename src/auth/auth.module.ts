@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { EmailVerificationService } from './email-verification.service';
 import { GithubAuthGuard } from './github-auth.guard';
 import { GoogleAuthGuard } from './google-auth.guard';
+import { getRequiredJwtSecret } from './jwt-secret.util';
 import { GithubStrategy } from './github.strategy';
 import { GoogleStrategy } from './google.strategy';
 import { JwtStrategy } from './jwt.strategy';
@@ -24,7 +25,7 @@ import { PasswordService } from './password.service';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') || 'secretKey',
+        secret: getRequiredJwtSecret(configService),
         signOptions: { expiresIn: '7d' },
       }),
       inject: [ConfigService],

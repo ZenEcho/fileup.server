@@ -88,13 +88,24 @@ export type SystemConfigAuditCategory = (typeof SystemConfigAuditCategory)[keyof
 export const PluginStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  CHANGES_REQUIRED: 'CHANGES_REQUIRED'
 } as const
 
 export type PluginStatus = (typeof PluginStatus)[keyof typeof PluginStatus]
 
 
 export const PluginVersionActionType = {
+  SUBMIT: 'SUBMIT',
+  RESUBMIT: 'RESUBMIT',
+  AUDIT_APPROVED: 'AUDIT_APPROVED',
+  AUDIT_REJECTED: 'AUDIT_REJECTED',
+  AUDIT_CHANGES_REQUIRED: 'AUDIT_CHANGES_REQUIRED',
+  VISIBILITY_PUBLIC: 'VISIBILITY_PUBLIC',
+  VISIBILITY_PRIVATE: 'VISIBILITY_PRIVATE',
+  FORCE_UNPUBLISH: 'FORCE_UNPUBLISH',
+  FORCE_REPUBLISH: 'FORCE_REPUBLISH',
+  PLUGIN_DELETE: 'PLUGIN_DELETE',
   ROLLBACK: 'ROLLBACK',
   DELETE: 'DELETE'
 } as const
