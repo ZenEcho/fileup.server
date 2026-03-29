@@ -1,18 +1,5 @@
 # FileUp Server
 
-A NestJS based backend server for FileUp application.
-基于 NestJS 的 FileUp 后端服务。
-
-<p align="left">
-  <img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS">
-  <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/node.js-5FA04E?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=Prisma&logoColor=white" alt="Prisma">
-  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-  <img src="https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white" alt="pnpm">
-  <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</p>
-
 ## Tech Stack / 技术栈
 
 ### Core Runtime & Framework / 核心运行时与框架
@@ -80,7 +67,7 @@ A NestJS based backend server for FileUp application.
 └── README.md               # 项目开发者系统手册、技术架构介绍及操作指南
 ```
 
-### Prisma Directory / Prisma 目录解析
+## Prisma Directory / 目录解析
 
 `prisma` 目录管理整个应用程序的数据模型、强类型客户端代码生成以及数据库版本迁移控制。
 
@@ -111,16 +98,17 @@ Before you begin, ensure you have met the following requirements:
 - **pnpm**: Package manager / 包管理器
 - **MySQL**: Database / 数据库
 
-## Installation / 安装
+## Usage Guide / 使用教程
+
+### 1) Installation / 安装
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-## Configuration / 配置
+### 2) Configuration / 配置
 
-Create a `.env` file in the root directory based on the following template:
-在根目录下创建一个 `.env` 文件，参考以下模板：
+在项目根目录创建 `.env`：
 
 ```env
 DATABASE_URL="mysql://user:password@localhost:3306/fileup"
@@ -138,95 +126,43 @@ EMAIL_VERIFY_RESEND_COOLDOWN_SECONDS=60
 PORT=3000
 ```
 
-> **Note**: Replace the placeholders with your actual configuration.
-> **注意**: 请将占位符替换为你实际的配置信息。
+### 3) Database / 数据库
 
-## Database Setup / 数据库设置
-
-After configuring the `.env` file, generate the Prisma client and push the schema to your database:
-配置好 `.env` 文件后，生成 Prisma 客户端并将结构同步到数据库：
+本地开发：
 
 ```bash
-# Generate Prisma Client / 生成 Prisma 客户端
-$ pnpm prisma generate
-
-# Push schema to database / 同步数据库结构
-$ pnpm prisma db push
+pnpm prisma generate
+pnpm prisma db push
 ```
 
-## Running the app / 运行应用
-
-### Local development / 本地开发
+生产环境：
 
 ```bash
-# start once / 单次启动
-$ pnpm run start
-
-# watch mode / 监听模式
-$ pnpm run start:dev
+pnpm prisma generate
+pnpm prisma migrate deploy
 ```
 
-### Production startup / 生产模式启动
-
-`pnpm run start:prod` runs the built output in `dist/`, so you must build first.
-`pnpm run start:prod` 会直接运行 `dist/` 中的构建产物，因此必须先构建。
+如生产首次接入且遇到 `P3005`（数据库非空），先做 baseline：
 
 ```bash
-$ pnpm build
-$ pnpm run start:prod
+mysqldump -uroot -p fileup > /root/fileup_backup_$(date +%F_%H%M%S).sql
+for m in $(ls -1 prisma/migrations | grep -v migration_lock.toml); do pnpm prisma migrate resolve --applied "$m"; done
+pnpm prisma migrate status
+pnpm prisma migrate deploy
 ```
 
-## Deployment / 部署
+### 4) Run / 启动
 
-### Deploy with PM2 / 使用 PM2 部署
+本地开发：
 
-We recommend using PM2 for process management in production.
-推荐在生产环境中使用 PM2 进行进程管理。
+```bash
+pnpm run start
+pnpm run start:dev
+```
 
-1.  **Build the project / 构建项目**:
+生产启动：
 
-    ```bash
-    $ pnpm build
-    ```
-
-    The build artifacts will be stored in the `dist/` directory.
-    构建产物将存储在 `dist/` 目录下。
-
-2.  **Install PM2 / 安装 PM2**:
-
-    ```bash
-    $ npm install -g pm2
-    ```
-
-3.  **Start the application / 启动应用**:
-
-    ```bash
-    $ pm2 start ecosystem.config.js
-    ```
-
-4.  **Monitor / 监控**:
-    ```bash
-    $ pm2 status
-    $ pm2 logs fileup-server
-    ```
-
-### Deploy with Docker / 使用 Docker 部署
-
-Alternatively, you can deploy using Docker.
-或者，你也可以使用 Docker 进行部署。
-
-1.  **Build and start / 构建并启动**:
-
-    ```bash
-    $ docker-compose up -d --build
-    ```
-
-2.  **View logs / 查看日志**:
-    ```bash
-    $ docker-compose logs -f
-    ```
-
-## License
-
-[MIT licensed](LICENSE).
-
+```bash
+pnpm build
+pnpm run start:prod
+```
