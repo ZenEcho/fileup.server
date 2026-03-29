@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 
-type PluginKind = 'uploader' | 'site-detector';
+type PluginKind = 'uploader' | 'site-detector' | 'editor-adapter';
 
 const UPLOADER_INPUT_TYPES = new Set([
   'text',
@@ -43,8 +43,11 @@ interface RawCreatePluginDto {
   author?: unknown;
   script?: unknown;
   targetDriveType?: unknown;
+  editorType?: unknown;
+  displayName?: unknown;
   detectScript?: unknown;
   extractScript?: unknown;
+  injectScript?: unknown;
   content?: unknown;
 }
 
@@ -177,9 +180,13 @@ function validateDataSource(value: unknown, field: string) {
 
 function readPluginKind(value: unknown, field: string): PluginKind {
   const normalized = readString(value, field, { required: true });
-  if (normalized !== 'uploader' && normalized !== 'site-detector') {
+  if (
+    normalized !== 'uploader' &&
+    normalized !== 'site-detector' &&
+    normalized !== 'editor-adapter'
+  ) {
     throw new BadRequestException(
-      `${field} must be either "uploader" or "site-detector"`,
+      `${field} must be one of: "uploader", "site-detector", "editor-adapter"`,
     );
   }
 
@@ -507,6 +514,118 @@ function normalizeSiteDetectorRuntime(
   return normalizedDetector;
 }
 
+function normalizeEditorAdapterRuntime(
+  content: JsonRecord,
+  topLevelEditorType?: string,
+  topLevelDisplayName?: string,
+  topLevelDetectScript?: string,
+  topLevelInjectScript?: string,
+) {
+  if (content.editorAdapter !== undefined && !isRecord(content.editorAdapter)) {
+    throw new BadRequestException('content.editorAdapter must be an object');
+  }
+
+  const editorAdapter = isRecord(content.editorAdapter)
+    ? content.editorAdapter
+    : {};
+  const normalizedEditorAdapter: JsonRecord = { ...editorAdapter };
+
+  const editorType =
+    normalizedEditorAdapter.editorType !== undefined
+      ? normalizedEditorAdapter.editorType
+      : content.editorType;
+  const displayName =
+    normalizedEditorAdapter.displayName !== undefined
+      ? normalizedEditorAdapter.displayName
+      : content.displayName;
+  const detectScript =
+    normalizedEditorAdapter.detectScript !== undefined
+      ? normalizedEditorAdapter.detectScript
+      : content.detectScript;
+  const injectScript =
+    normalizedEditorAdapter.injectScript !== undefined
+      ? normalizedEditorAdapter.injectScript
+      : content.injectScript;
+
+  normalizedEditorAdapter.editorType =
+    typeof editorType === 'string' ? editorType : '';
+  normalizedEditorAdapter.displayName =
+    typeof displayName === 'string' ? displayName : '';
+  normalizedEditorAdapter.detectScript =
+    typeof detectScript === 'string' ? detectScript : '';
+  normalizedEditorAdapter.injectScript =
+    typeof injectScript === 'string' ? injectScript : '';
+
+  if (
+    topLevelEditorType &&
+    (typeof normalizedEditorAdapter.editorType !== 'string' ||
+      normalizedEditorAdapter.editorType.trim().length === 0)
+  ) {
+    normalizedEditorAdapter.editorType = topLevelEditorType;
+  }
+
+  if (
+    topLevelDisplayName &&
+    (typeof normalizedEditorAdapter.displayName !== 'string' ||
+      normalizedEditorAdapter.displayName.trim().length === 0)
+  ) {
+    normalizedEditorAdapter.displayName = topLevelDisplayName;
+  }
+
+  if (
+    topLevelDetectScript &&
+    (typeof normalizedEditorAdapter.detectScript !== 'string' ||
+      normalizedEditorAdapter.detectScript.trim().length === 0)
+  ) {
+    normalizedEditorAdapter.detectScript = topLevelDetectScript;
+  }
+
+  if (
+    topLevelInjectScript &&
+    (typeof normalizedEditorAdapter.injectScript !== 'string' ||
+      normalizedEditorAdapter.injectScript.trim().length === 0)
+  ) {
+    normalizedEditorAdapter.injectScript = topLevelInjectScript;
+  }
+
+  readString(
+    normalizedEditorAdapter.editorType,
+    'content.editorAdapter.editorType',
+    {
+      required: true,
+    },
+  );
+  readString(
+    normalizedEditorAdapter.displayName,
+    'content.editorAdapter.displayName',
+    {
+      required: true,
+    },
+  );
+  readString(
+    normalizedEditorAdapter.detectScript,
+    'content.editorAdapter.detectScript',
+    {
+      required: true,
+    },
+  );
+  readString(
+    normalizedEditorAdapter.injectScript,
+    'content.editorAdapter.injectScript',
+    {
+      required: true,
+    },
+  );
+
+  content.editorAdapter = normalizedEditorAdapter;
+  delete content.editorType;
+  delete content.displayName;
+  delete content.detectScript;
+  delete content.injectScript;
+
+  return normalizedEditorAdapter;
+}
+
 function normalizeContent(
   data: RawCreatePluginDto,
   normalized: Omit<NormalizedCreatePluginPayload, 'content' | 'kind'>,
@@ -540,6 +659,14 @@ function normalizeContent(
     data.targetDriveType.trim().length > 0
       ? data.targetDriveType.trim()
       : undefined;
+  const topLevelEditorType =
+    typeof data.editorType === 'string' && data.editorType.trim().length > 0
+      ? data.editorType.trim()
+      : undefined;
+  const topLevelDisplayName =
+    typeof data.displayName === 'string' && data.displayName.trim().length > 0
+      ? data.displayName.trim()
+      : undefined;
   const topLevelDetectScript =
     typeof data.detectScript === 'string' && data.detectScript.trim().length > 0
       ? data.detectScript
@@ -548,6 +675,10 @@ function normalizeContent(
     typeof data.extractScript === 'string' &&
     data.extractScript.trim().length > 0
       ? data.extractScript
+      : undefined;
+  const topLevelInjectScript =
+    typeof data.injectScript === 'string' && data.injectScript.trim().length > 0
+      ? data.injectScript
       : undefined;
 
   if (topLevelAuthor) {
@@ -562,7 +693,7 @@ function normalizeContent(
         validateUploaderInput(input, index, 'content.uploader.inputs'),
       );
     }
-  } else {
+  } else if (normalizedKind === 'site-detector') {
     const detector = normalizeSiteDetectorRuntime(
       content,
       topLevelTargetDriveType,
@@ -588,6 +719,14 @@ function normalizeContent(
     validateDetectorActionForm(
       detector.actionForm,
       'content.detector.actionForm',
+    );
+  } else {
+    normalizeEditorAdapterRuntime(
+      content,
+      topLevelEditorType,
+      topLevelDisplayName,
+      topLevelDetectScript,
+      topLevelInjectScript,
     );
   }
 
